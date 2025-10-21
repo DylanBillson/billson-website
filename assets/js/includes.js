@@ -1,12 +1,12 @@
-<script>
 /*
   Client-side include loader for GitHub Pages.
+
   Works for:
-  - User/Org site (https://username.github.io/): base = "/"
-  - Project site   (https://username.github.io/repo/): set data-base="/repo"
-  Usage on each page:
+  - Root/custom domain (e.g., https://billson.li): base = "/"
+  - Project site (e.g., https://username.github.io/repo/): pass data-base="/repo"
+  Usage in HTML:
     <script src="/assets/js/includes.js" data-base="/repo-name"></script>
-  If you use a custom domain at the root, leave data-base blank.
+  If using a custom domain at root, omit data-base.
 */
 
 async function inject(selector, url, base) {
@@ -14,20 +14,25 @@ async function inject(selector, url, base) {
   if (!el) return;
   const resolved = base.replace(/\/$/, '') + url; // join base + url
   const res = await fetch(resolved, { cache: "no-store" });
-  if (!res.ok) { console.warn("Include failed:", resolved, res.status); return; }
+  if (!res.ok) {
+    console.warn("Include failed:", resolved, res.status);
+    return;
+  }
   el.innerHTML = await res.text();
 }
 
 function markActiveNav(base) {
-  // After header injected, highlight active link
+  // Highlight the current nav item after header is injected
   const here = window.location.pathname.replace(base, "/");
   const links = document.querySelectorAll(".site-nav a");
   links.forEach(a => {
-    const href = a.getAttribute("href");
-    // Normalize href with base
+    const href = a.getAttribute("href") || "/";
     const target = href.startsWith("/") ? href : "/" + href;
-    if (target === "/" && (here === "/" || here === "/index.html")) a.classList.add("active");
-    else if (target !== "/" && here.startsWith(target)) a.classList.add("active");
+    if (target === "/" && (here === "/" || here === "/index.html")) {
+      a.classList.add("active");
+    } else if (target !== "/" && here.startsWith(target)) {
+      a.classList.add("active");
+    }
   });
 }
 
@@ -47,4 +52,3 @@ function markActiveNav(base) {
     markActiveNav(base);
   });
 })();
-</script>

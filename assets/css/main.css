@@ -47,6 +47,7 @@ p{ margin:.5rem 0 1rem; }
   align-items:center;
   text-decoration:none;
   line-height: 0;
+  padding-bottom: 1rem;
 }
 .site-header .logo img{
   width:256px;   /* adjust size as needed */
@@ -101,6 +102,7 @@ p{ margin:.5rem 0 1rem; }
   background:var(--header-bg);               /* #3e3e3c */
   color:var(--header-fg);                    /* #ffffff */
   border-top:1px solid rgba(0,0,0,.25);
+  flex-wrap: wrap; /*new 13*/
 }
 
 .footer-left{
@@ -147,6 +149,15 @@ p{ margin:.5rem 0 1rem; }
   transform: translateY(0);
   transition: transform 160ms ease, box-shadow 160ms ease;
   will-change: transform;
+  flex: 0 0 auto; /*new 13*/
+}
+.footer-social img{ /*new 13*/
+  display:block;
+  width:20px !important;     /* force a consistent icon size */
+  height:20px !important;
+  max-width:none;            /* ignore intrinsic SVG width */
+  aspect-ratio: 1 / 1;       /* prevents odd aspect math on some mobiles */
+  flex: 0 0 auto;
 }
 .footer-social a:hover{
   transform: translateY(-2px);

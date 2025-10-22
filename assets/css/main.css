@@ -11,13 +11,6 @@ html,body{ margin:0; padding:0; background:var(--bg); color:var(--text); font:16
 
 .container{ max-width:1100px; margin-inline:auto; padding:2rem 1rem; }
 
-.site-header{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1rem; border-bottom:1px solid var(--border); }
-.site-header .logo{ display:flex; align-items:center; gap:.6rem; text-decoration:none; color:var(--text); font-weight:600; }
-.site-header .site-nav{ display:flex; gap:1rem; }
-.site-header .site-nav a{ text-decoration:none; color:var(--text); padding:.5rem .7rem; border-radius:.5rem; }
-.site-header .site-nav a:hover{ background:#f8fafc; }
-.site-header .site-nav a.active{ color:var(--brand); font-weight:600; }
-
 h1,h2,h3{ line-height:1.2; margin:0 0 .5rem; }
 p{ margin:.5rem 0 1rem; }
 
@@ -28,6 +21,745 @@ p{ margin:.5rem 0 1rem; }
 .grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:1rem; }
 .card{ border:1px solid var(--border); border-radius:.8rem; padding:1rem; background:#fff; }
 
-.site-footer{ border-top:1px solid var(--border); padding:1.25rem 1rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.75rem; color:var(--muted); }
-.site-footer a{ color:inherit; text-decoration:none; }
-.site-footer a:hover{ text-decoration:underline; }
+/* === Header CSS START === */
+:root{
+  --header-bg:#3e3e3c;    /* Galea Grey */
+  --header-fg:#ffffff;    /* White text */
+  --header-hover:rgba(255,255,255,.08);
+  --header-active:#ffffff;
+}
+
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:0.35rem 1rem;
+  padding-top: 1rem;
+  padding-left: 1.75rem;
+  background:var(--header-bg);
+  border-bottom:1px solid rgba(0,0,0,.15);
+}
+
+/* Logo (icon-only SVG) */
+.site-header .logo{
+  display:flex;
+  align-items:center;
+  text-decoration:none;
+  line-height: 0;
+}
+.site-header .logo img{
+  width:256px;   /* adjust size as needed */
+  display:block;
+}
+
+/* Primary nav */
+.site-header .site-nav{
+  display:flex;
+  gap:.5rem;
+}
+.site-header .site-nav a{
+  color:var(--header-fg);
+  text-decoration:none;
+  padding:.5rem .7rem;
+  border-radius:.5rem;
+  line-height:1;
+}
+.site-header .site-nav a:hover{
+  background:var(--header-hover);
+}
+.site-header .site-nav a:focus-visible{
+  outline:2px solid #fff;
+  outline-offset:2px;
+  border-radius:.5rem;
+}
+.site-header .site-nav a.active{
+  color:var(--header-active);
+  background:var(--header-hover);
+  font-weight:600;
+}
+
+/* Optional: stack on very narrow screens */
+@media (max-width:520px){
+  .site-header{
+    flex-wrap:wrap;
+  }
+  .site-header .site-nav{
+    width:100%;
+    justify-content:flex-end;
+  }
+}
+/* === Header CSS END === */
+
+/* === Footer CSS START === */
+.site-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:1rem;
+  background:var(--header-bg);               /* #3e3e3c */
+  color:var(--header-fg);                    /* #ffffff */
+  border-top:1px solid rgba(0,0,0,.25);
+}
+
+.footer-left{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+}
+
+.footer-logo img{
+  width:28px; height:28px; display:block;
+}
+
+.footer-copy{ font-size:.95rem; }
+
+/* Policies link */
+.footer-nav a{
+  color:var(--header-fg);
+  text-decoration:none;
+  padding:.25rem .4rem;
+  border-radius:.4rem;
+}
+.footer-nav a:hover{ background:var(--header-hover); }
+
+/* Social icons row */
+.footer-social{
+  display:flex; align-items:center; gap:1.5rem;
+}
+/* More spacing between icons */
+.footer-social{
+  display:flex;
+  align-items:center;
+  gap:.75rem; /* was .5rem */
+}
+
+/* “Raise” on hover (no lighter bg) */
+.footer-social a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px; height:28px;
+  border-radius:.4rem;
+  text-decoration:none;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  transform: translateY(0);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  will-change: transform;
+}
+.footer-social a:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+}
+.footer-social a:focus-visible{
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,.35);
+}
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .footer-social a{ transition: none; }
+}
+
+/* Small screens */
+@media (max-width:640px){
+  .site-footer{ flex-wrap:wrap; }
+  .footer-nav{ order:3; width:100%; margin-top:.25rem; }
+}
+
+/* === Homepage CSS START === */
+/* Base tokens (add or merge with yours) */
+:root{
+  --grey:#3e3e3c;         /* Galea Grey */
+  --blue:#055680;         /* Xperfecta accent */
+  --text:#1f2937;
+  --bg:#ffffff;
+  --tint:#f7f8f9;         /* very light grey wash */
+  --border:#e5e7eb;
+}
+
+/* Page background pattern: subtle dot grid (site-wide) */
+body{
+  background:
+    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 1.5px) 0 0/22px 22px,
+    var(--bg);
+}
+
+/* Section scaffolding */
+.section{ padding: 64px 0; }
+.section--tint{ background: var(--tint); }
+.section--band{ background: #fcfcfd; } /* a second, slightly different light */
+.section .container{ max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+/* Accent separators (use above a new section) */
+.rule{
+  height: 4px;
+  background: var(--blue);
+  width: 72px;
+  border-radius: 999px;
+  margin: 0 auto 24px; /* centered; or align-left by removing auto */
+}
+
+/* Gradient headline text */
+.h-gradient{
+  background: linear-gradient(90deg, var(--grey) 0%, var(--blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Hero sizing */
+.hero h1{ font-size: clamp(32px, 6vw, 56px); margin: 0 0 12px; }
+.hero p{ max-width: 60ch; color: var(--text); opacity: .9; }
+
+/* Card grid (Divisions, Platform tiles, etc.) */
+.grid{ display: grid; gap: 16px; }
+.grid-3{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+@media (max-width: 900px){ .grid-3{ grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px){ .grid-3{ grid-template-columns: 1fr; } }
+
+.card{
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  display: flex;
+  flex-direction: column;
+}
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+}
+
+/* Tiny status chips (Divisions) */
+.chip{
+  display:inline-block; font-size:12px; line-height:1;
+  padding:6px 8px; border-radius:999px;
+  border:1px solid var(--blue); color: var(--blue); background: transparent;
+  margin-bottom:10px;
+}
+
+/* Section titles */
+.section h2{
+  font-size: clamp(22px, 3.2vw, 28px);
+  color: var(--grey);
+  margin: 0 0 12px;
+}
+.section p{ color: var(--text); }
+
+/* Buttons later (first used in Divisions) */
+.btn{
+  display:inline-block; text-decoration:none;
+  background: var(--blue); color: #fff;
+  padding: 10px 14px; border-radius: 10px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.btn:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.15); }
+.card .btn{
+  margin-top: auto;       /* occupies remaining space above */
+  align-self: flex-start; /* keeps button left-aligned */
+}
+.card .btn{
+  margin-top: auto;       /* occupies remaining space above */
+  align-self: flex-start; /* keeps button left-aligned */
+}
+/* Optional: keep motion respectful */
+@media (prefers-reduced-motion: reduce){
+  .card, .btn{ transition: none; }
+}
+/* === Homepage CSS END === */
+
+/* === Contact us CSS START === */
+    /* --- Contact page additions --- */
+    .contact-wrap { display:grid; gap:24px; grid-template-columns: 2fr 1fr; }
+    @media (max-width: 900px){ .contact-wrap { grid-template-columns: 1fr; } }
+
+    .form-card, .info-card {
+      background:#fff; border:1px solid var(--border); border-radius:10px; padding:18px;
+    }
+    .form-row { display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 640px){ .form-row { grid-template-columns: 1fr; } }
+
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .field label { font-weight:600; color:var(--grey); }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field select,
+    .field textarea {
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:10px 12px;
+      font:inherit;
+      background:#fff;
+    }
+    .field textarea { min-height:120px; resize:vertical; }
+
+    .help { font-size:12px; color:#6b7280; }
+
+    .radio-row { display:flex; gap:12px; flex-wrap:wrap; }
+    .radio-row label { font-weight:500; color:var(--text); }
+
+    .alert {
+      display:none; margin:0 0 12px; padding:12px 14px; border-radius:10px;
+      background:#ecf7ff; border:1px solid #cfeaff; color:#064d6a;
+    }
+    .alert.show { display:block; }
+
+    .info-card h3 { margin:0 0 8px; color:var(--grey); }
+    .info-line { margin:6px 0; }
+
+    /* Card tint so it’s not plain */
+.form-card, .info-card{
+  background: var(--tint);           /* subtle grey wash */
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+/* Layout helpers */
+.form-row.two{ display:grid; gap:12px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 640px){ .form-row.two{ grid-template-columns: 1fr; } }
+
+/* Fields */
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field label{ font-weight:600; color:var(--grey); }
+.opt{ font-weight:500; font-size:12px; color:#6b7280; opacity:.85; }
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field select,
+.field textarea{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px 12px;
+  font:inherit;
+  background:#fff;
+}
+.field textarea{ min-height:120px; resize:vertical; }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  outline:none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(5,86,128,.15);
+}
+
+/* Phone type toggle buttons */
+.toggle-group{
+  display:flex; gap:8px; flex-wrap:wrap;
+}
+.toggle-group button{
+  appearance:none; border:none; cursor:pointer;
+  padding:8px 12px; border-radius:999px;
+  background:#e9ecef; color:#1f2937;
+  font:inherit; line-height:1;
+  transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.toggle-group button:hover{ transform: translateY(-1px); box-shadow: 0 6px 12px rgba(0,0,0,.12); }
+.toggle-group button.active{
+  background:#fff; color:#111827;
+  box-shadow: 0 8px 18px rgba(0,0,0,.15);
+  border:1px solid var(--border);
+}
+
+/* Styled select with custom arrow */
+.select-wrap{ position:relative; }
+.select-wrap select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background:#fff;
+  padding-right: 42px;               /* room for the arrow */
+}
+.select-wrap::after{
+  content:"";
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  width:0; height:0;
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  border-top:7px solid var(--grey);   /* arrow color */
+  pointer-events:none;
+}
+
+/* Dropdown menu highlight (limited cross-browser control) */
+select:focus{ outline:none; }
+select option:checked{ background: linear-gradient(var(--blue), var(--blue)); color:#fff; }
+/* More vertical spacing between fields */
+.form-card .field{
+  margin-bottom: 14px;            /* was 0 */
+}
+.form-card .field:last-child{
+  margin-bottom: 0;
+}
+
+/* Button: remove default black outline; keep accessible focus */
+.btn{
+  border: none;                    /* removes default border/outline look */
+}
+.btn:focus,
+.btn:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(5,86,128,.35); /* branded focus halo */
+}
+/* Make all inputs/selects/textarea fill their container */
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field select,
+.field textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ensure the styled select wrapper also spans full width */
+.select-wrap {
+  display: block;
+  width: 100%;
+}
+
+.select-wrap select {
+  width: 100%;
+}
+
+/* === Our team CSS START === */
+
+/* --- Layout wrappers --- */
+.team-hero{
+  display:grid;
+  gap:24px;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 960px){
+  .team-hero{ grid-template-columns: 1fr; }
+}
+
+/* Optional intro paragraph under page title */
+.team-intro{
+  max-width: 70ch;
+  color: var(--text);
+}
+
+/* --- Large profile cards (Fif / Mark) --- */
+.team-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.team-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(0,0,0,.08);
+}
+
+/* Centered, natural-size image (transparent PNG/SVG friendly) */
+.team-media{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+  min-height: 220px;          /* breathing room without fixing size */
+}
+.team-media img{
+  display:block;
+  height:auto;                 /* keep natural aspect */
+  max-width: 85%;              /* avoid overflow */
+  max-height: 260px;           /* prevent oversize */
+}
+
+/* Center names/titles */
+.team-name,
+.team-title{ text-align:center; }
+.team-name{
+  margin:0;
+  font-size: clamp(22px, 3.2vw, 28px);
+  color: var(--grey);
+}
+.team-title{
+  margin: -4px 0 6px;
+  color:#4b5563;
+  font-weight:600;
+}
+
+/* Bio text */
+.team-bio p{
+  margin: 0 0 10px;
+  color: var(--text);
+}
+
+/* --- Smaller people grid --- */
+.people-grid{
+  display:grid;
+  gap:16px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+@media (max-width: 900px){
+  .people-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 640px){
+  .people-grid{ grid-template-columns: 1fr; }
+}
+
+.person-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.person-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+}
+
+/* Centered, natural-size for icon-style portraits */
+.person-media{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+  min-height: 160px;
+}
+.person-media img{
+  display:block;
+  height:auto;
+  max-width: 75%;
+  max-height: 160px;
+}
+
+/* Center names/titles + short blurb */
+.person-name,
+.person-title,
+.person-bio{ text-align:center; }
+
+.person-name{
+  margin:0;
+  color: var(--grey);
+  font-weight:700;
+}
+.person-title{
+  margin:-2px 0 0;
+  color:#4b5563;
+  font-size:.95rem;
+  font-weight:600;
+}
+.person-bio{
+  margin-top:6px;
+  color: var(--text);
+  font-size:.95rem;
+}
+
+/* --- Motion preference --- */
+@media (prefers-reduced-motion: reduce){
+  .team-card, .person-card{ transition: none; }
+}
+/* === Our team CSS END === */
+
+/* === About us CSS START === */
+    :root{
+      /* relies on your existing tokens; these are just references */
+      --grey:#3e3e3c;
+      --blue:#055680;
+      --border:#e5e7eb;
+      --tint:#f7f8f9;
+      --text:#1f2937;
+    }
+
+    .about-intro{
+      max-width: 75ch;
+      color: var(--text);
+    }
+
+    /* Timeline wrapper */
+    .timeline{
+      position: relative;
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 1fr;
+      /* a soft band so it stands apart */
+      background: var(--tint);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    /* Vertical center line on desktop */
+    @media (min-width: 900px){
+      .timeline{
+        padding: 32px 24px;
+      }
+      .timeline::before{
+        content:"";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.08));
+        transform: translateX(-1px);
+      }
+    }
+
+    .tl-item{
+      position: relative;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+
+    /* For desktop, alternate left/right */
+    @media (min-width: 900px){
+      .tl-item{
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+      }
+      .tl-item:nth-child(odd) .tl-content{ grid-column: 1; }
+      .tl-item:nth-child(odd) .tl-year   { grid-column: 2; text-align: left; }
+      .tl-item:nth-child(even) .tl-content{ grid-column: 2; }
+      .tl-item:nth-child(even) .tl-year   { grid-column: 1; text-align: right; }
+    }
+
+    /* Year badge */
+    .tl-year{
+      font-weight: 800;
+      color: var(--grey);
+      font-size: clamp(22px, 3.2vw, 28px);
+      padding: 6px 10px;
+    }
+
+    /* The dot connector */
+    .tl-dot{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--blue);
+      box-shadow: 0 0 0 4px rgba(5,86,128,.1);
+      display: none;
+    }
+    @media (min-width: 900px){
+      .tl-dot{ display:block; }
+    }
+
+    /* Content cards */
+    .tl-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .tl-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px rgba(0,0,0,.08);
+    }
+    .tl-card h3{
+      margin:0 0 6px;
+      color: var(--grey);
+      font-size: 1.1rem;
+    }
+    .tl-card p{ margin:0 0 8px; color: var(--text); }
+    .tl-chip{
+      display:inline-block;
+      font-size:12px; line-height:1;
+      padding:6px 8px;
+      border-radius:999px;
+      border:1px solid var(--blue);
+      color: var(--blue);
+      background: transparent;
+      margin-bottom:8px;
+    }
+
+    /* Spacing between items */
+    .tl-spacer{ height: 6px; }
+
+
+    /* --- Policies page additions (uses your existing tokens/classes) --- */
+
+    .policies-grid{
+      display:grid;
+      gap:16px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    @media (max-width: 900px){
+      .policies-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 640px){
+      .policies-grid{ grid-template-columns: 1fr; }
+    }
+
+    .policy-card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px;
+      display:flex;               /* so we can pin the button */
+      flex-direction:column;
+      gap:10px;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .policy-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.08);
+    }
+
+    .policy-title{
+      margin:0;
+      color: var(--grey);
+      font-size: 1.1rem;
+    }
+    .policy-desc{
+      margin:0;
+      color: var(--text);
+    }
+    .policy-actions{
+      margin-top:auto;            /* pins actions to the bottom */
+      display:flex;
+      gap:10px;
+    }
+    .btn-outline{
+      display:inline-block;
+      text-decoration:none;
+      background:#fff;
+      color:var(--blue);
+      border:1px solid var(--blue);
+      padding:10px 14px;
+      border-radius:10px;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+    .btn-outline:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.12);
+      background:#f7fbfe;
+    }
+
+    /* optional small label under heading */
+    .policy-note{
+      margin: 8px 0 0; font-size: .9rem; color:#4b5563;
+    }
+
+html, body { height: 100%; }
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* Your main content wrapper should expand; if you use <main>, target that */
+main { flex: 1; }
+
+/* Ensure no unexpected gaps */
+body, main { margin: 0; }

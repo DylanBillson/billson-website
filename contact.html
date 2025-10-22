@@ -11,13 +11,148 @@
 <body>
   <div id="site-header"></div>
 
-  <main class="container">
-    <h1>Contact us</h1>
-    <p>Email: <a href="mailto:hello@xperfecta.com">info@xperfecta.com</a></p>
-    <!-- If you want a form later, we can wire Formspree or Netlify Forms without a backend. -->
+  <main class="section section--plain">
+    <div class="container">
+      <div class="rule"></div>
+      <h1 class="h-gradient">Contact us</h1>
+      <p>We’ll get back to you as soon as we can.</p>
+
+      <div class="contact-wrap">
+        <!-- FORM -->
+        <section class="form-card" aria-labelledby="contactFormTitle">
+          <h2 id="contactFormTitle" style="margin-top:0;">Send a message</h2>
+
+          <div id="formAlert" class="alert" role="status" aria-live="polite">
+            Thank you — your message has been recorded.
+          </div>
+
+<form id="contactForm" action="#" method="post" novalidate>
+  <!-- Name + Email (one line) -->
+  <div class="form-row two">
+    <div class="field">
+      <label for="name">Name *</label>
+      <input id="name" name="name" type="text" required autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for="email">Email *</label>
+      <input id="email" name="email" type="email" required autocomplete="email" />
+    </div>
+  </div>
+
+  <!-- Phone (full width) -->
+  <div class="field">
+    <label for="phone">Phone <span class="opt">(optional)</span></label>
+    <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+  </div>
+
+  <!-- Phone type (toggle buttons) -->
+  <div class="field">
+    <label>Phone type</label>
+    <div class="toggle-group" id="phoneType">
+      <button type="button" data-value="office" class="active">Office</button>
+      <button type="button" data-value="mobile">Mobile</button>
+      <button type="button" data-value="whatsapp">WhatsApp</button>
+    </div>
+    <input type="hidden" name="phone_type" id="phone_type" value="office" />
+  </div>
+
+  <!-- Subject (styled select) -->
+  <div class="field">
+    <label for="subject">Subject *</label>
+    <div class="select-wrap">
+      <select id="subject" name="subject" required>
+        <option value="" selected disabled>Select a subject…</option>
+        <option>General enquiry</option>
+        <option>Partnerships</option>
+        <option>Press / media</option>
+        <option>Careers</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Message now below subject (full width) -->
+  <div class="field">
+    <label for="message">Message <span class="opt">(optional)</span></label>
+    <textarea id="message" name="message" placeholder="How can we help?"></textarea>
+  </div>
+
+  <button class="btn" type="submit">Send Message</button>
+</form>
+
+        </section>
+
+        <!-- SIDE INFO CARD -->
+        <aside class="info-card" aria-labelledby="contactInfoTitle">
+          <h3 id="contactInfoTitle">Contact details</h3>
+          <p class="info-line"><strong>Email:</strong> <a href="mailto:info@xperfecta.com">info@xperfecta.com</a></p>
+          <p class="info-line"><strong>Office hours:</strong> Monday to Friday 09:00–17:00 (GMT)</p>
+        </aside>
+      </div>
+    </div>
   </main>
 
   <div id="site-footer"></div>
+
   <script src="/assets/js/includes.js"></script>
+  <script>
+    // Fake-submit handler (no backend yet)
+    document.getElementById('contactForm').addEventListener('submit', function(e){
+      e.preventDefault();
+
+      // Simple front-end required check
+      const name = this.querySelector('#name');
+      const email = this.querySelector('#email');
+      const subject = this.querySelector('#subject');
+      if(!name.value || !email.value || !subject.value){
+        // use browser validation UI
+        (name.value ? (email.value ? subject : name) : name).reportValidity();
+        return;
+      }
+
+      // Show success state
+      const alertBox = document.getElementById('formAlert');
+      alertBox.classList.add('show');
+
+      // Simulate a submit by clearing (you can remove this if you prefer)
+      this.reset();
+
+      // Keep default radio after reset
+      this.querySelector('input[name="phone_type"][value="office"]').checked = true;
+
+      // Scroll alert into view on mobile
+      alertBox.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  </script>
+<script>
+  // Toggle group for Phone Type
+  (function(){
+    const group = document.getElementById('phoneType');
+    const hidden = document.getElementById('phone_type');
+    if(!group || !hidden) return;
+
+    group.addEventListener('click', (e)=>{
+      const btn = e.target.closest('button[data-value]');
+      if(!btn) return;
+      group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      hidden.value = btn.dataset.value;
+    });
+  })();
+
+  // Ensure default after fake submit reset
+  document.getElementById('contactForm').addEventListener('submit', function(){
+    setTimeout(()=>{
+      // restore default phone type
+      const group = document.getElementById('phoneType');
+      const hidden = document.getElementById('phone_type');
+      if(group && hidden){
+        group.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.value === 'office'));
+        hidden.value = 'office';
+      }
+    },0);
+  });
+</script>
+
 </body>
 </html>

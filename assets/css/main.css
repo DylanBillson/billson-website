@@ -192,12 +192,14 @@ p{ margin:.5rem 0 1rem; }
 }
 
 /* Page background pattern: subtle dot grid (site-wide) */
-body{
+html{
   background:
-    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.06) 1px, transparent 1.5px) 0 0/22px 22px,
+    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.12) 1px, transparent 1.5px) 0 0/22px 22px,
     var(--bg);
 }
-
+body{
+  background: transparent; /* let the root show through */
+}
 /* Section scaffolding */
 .section{ padding: 64px 0; }
 .section--tint{ background: var(--tint); }
@@ -264,7 +266,7 @@ body{
 /* Buttons later (first used in Divisions) */
 .btn{
   display:inline-block; text-decoration:none;
-  background: var(--blue); color: #fff;
+  background: var(--grey); color: #fff;
   padding: 10px 14px; border-radius: 10px;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
@@ -280,6 +282,26 @@ body{
 /* Optional: keep motion respectful */
 @media (prefers-reduced-motion: reduce){
   .card, .btn{ transition: none; }
+}
+/* === Galea Button === */
+.btn-galea{
+  display:inline-block; text-decoration:none;
+  background: #0066cc; color: #fff;
+  padding: 10px 14px; border-radius: 10px;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.btn-galea:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,.15); }
+.card .btn-galea{
+  margin-top: auto;       /* occupies remaining space above */
+  align-self: flex-start; /* keeps button left-aligned */
+}
+.card .btn-galea{
+  margin-top: auto;       /* occupies remaining space above */
+  align-self: flex-start; /* keeps button left-aligned */
+}
+/* Optional: keep motion respectful */
+@media (prefers-reduced-motion: reduce){
+  .card, .btn-galea{ transition: none; }
 }
 /* === Homepage CSS END === */
 

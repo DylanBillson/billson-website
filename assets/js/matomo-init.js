@@ -36,18 +36,28 @@
     setConsent('accepted');
     CONFIG.useCookies = true;
 
+    // Tell Matomo consent is granted (optionally persist for 365 days)
     var _paq = window._paq = window._paq || [];
-    _paq.push(['rememberConsentGiven']);       // tell Matomo consent is now granted
-    _paq.push(['forgetConsentRemoved']);       // clear any old “consent removed” cookie
+    _paq.push(['rememberConsentGiven', 365]);
+
+    // (Optional) tidy-up: manually clear any stale "consent removed" cookie
+    // Try with and without a leading dot on the domain
+    ['' , '.'].forEach(function(prefix){
+      document.cookie = 'mtm_consent_removed=; Max-Age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=' + prefix + location.hostname + '; SameSite=Lax';
+    });
 
     bootMatomo();
   };
+
   window.disableAnalytics = function () {
     setConsent('rejected');
-    // Matomo APIs for consent:
+
     var _paq = window._paq = window._paq || [];
-    _paq.push(['forgetConsentGiven']);
-    // Optional: reload page to clear any in-memory trackers
+    _paq.push(['forgetConsentGiven']);           // revoke
+    _paq.push(['rememberConsentRemoved', 365]);  // persist the "rejected" state (1 year)
+
+    // (You can optionally trigger a soft reload if you want to clear any in-memory trackers)
+    // location.reload();
   };
 
   // --- AUTO-START based on stored consent ---

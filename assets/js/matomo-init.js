@@ -36,27 +36,21 @@
     setConsent('accepted');
     CONFIG.useCookies = true;
 
-    // Tell Matomo consent is granted (optionally persist for 365 days)
     var _paq = window._paq = window._paq || [];
-    _paq.push(['rememberConsentGiven', 365]);
+    _paq.push(['forgetUserOptOut']);            // remove mtm_consent_removed
+    _paq.push(['rememberConsentGiven', 365*24]); // remember consent for ~12 months
 
-    // (Optional) tidy-up: manually clear any stale "consent removed" cookie
-    // Try with and without a leading dot on the domain
-    ['' , '.'].forEach(function(prefix){
-      document.cookie = 'mtm_consent_removed=; Max-Age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=' + prefix + location.hostname + '; SameSite=Lax';
-    });
-
-    bootMatomo();
+    bootMatomo();                               // now load matomo with cookies
   };
 
   window.disableAnalytics = function () {
     setConsent('rejected');
 
     var _paq = window._paq = window._paq || [];
-    _paq.push(['forgetConsentGiven']);           // revoke
-    _paq.push(['rememberConsentRemoved', 365]);  // persist the "rejected" state (1 year)
+    _paq.push(['forgetConsentGiven']);          // revoke any stored consent
+    _paq.push(['optUserOut']);                  // set mtm_consent_removed
 
-    // (You can optionally trigger a soft reload if you want to clear any in-memory trackers)
+    // (optional) reload to fully clear any in-memory trackers:
     // location.reload();
   };
 

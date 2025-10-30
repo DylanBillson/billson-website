@@ -845,3 +845,164 @@ body, main { margin: 0; }
   .switch-track,.switch-thumb{transition:none}
 }
 /* === Cookie Toggle CSS END === */
+
+/* === blog CSS START === */
+/* === Blog === */
+.blog-grid{
+  display:grid;
+  gap:16px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+}
+@media (max-width: 992px){ .blog-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px){ .blog-grid{ grid-template-columns: 1fr; } }
+
+/* Reuse .card base; add blog specifics */
+.blog-card{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.blog-card .thumb{
+  width:100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display:block;
+  background:#e5e7eb;
+  border-radius:8px;
+}
+.blog-card h3{
+  margin:10px 0 6px;
+  color: var(--grey);
+  font-size: 1.1rem;
+}
+.blog-card .excerpt{
+  color: var(--text);
+  margin:0 0 10px;
+}
+.blog-meta{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  color:#6b7280;
+  font-size:.9rem;
+  margin-top:auto;             /* pushes meta to the bottom before the button */
+}
+.blog-meta time{ color:#6b7280; }
+.blog-card .btn{
+  margin-top:10px;
+}
+
+/* Single post layout */
+.post-hero{
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff;
+}
+.post-hero img{
+  width:100%;
+  display:block;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background:#e5e7eb;
+}
+.post-title{
+  margin:14px 0 6px;
+  color: var(--grey);
+}
+.post-meta{
+  color:#6b7280;
+  font-size:.95rem;
+  margin-bottom:16px;
+}
+.post-content{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+}
+.post-content h2, .post-content h3{ color: var(--grey); }
+.post-nav{
+  display:flex; justify-content:space-between; gap:12px; margin-top:16px;
+}
+.post-nav a{ text-decoration:none; }
+
+/* Tiny tag/badge if you want it later */
+.post-tag{
+  display:inline-block; font-size:12px; line-height:1;
+  padding:6px 8px; border-radius:999px;
+  border:1px solid var(--blue); color: var(--blue);
+}
+/* === blog CSS END === */
+
+/* === Single Blog Post === */
+.post-wrap { max-width: 900px; margin: 0 auto; }
+
+.post-head { margin-bottom: 16px; }
+.post-title { margin: 0 0 6px; color: var(--grey); font-size: clamp(28px, 4.6vw, 40px); }
+.post-meta { color:#6b7280; font-size:.95rem; display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
+
+/* Small, cinematic hero */
+.post-hero {
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff;
+}
+.post-hero img {
+  width:100%; display:block;
+  aspect-ratio: 21 / 9;    /* shorter than 16:9 */
+  object-fit: cover;
+  background:#e5e7eb;
+}
+
+/* Content */
+.post-content {
+  margin-top: 16px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding: 22px;
+}
+.post-content p { margin: 0 0 12px; color: var(--text); }
+.post-content h2, .post-content h3 { color: var(--grey); margin: 18px 0 8px; }
+
+/* Lead paragraph */
+.post-lead { font-size: 1.12rem; line-height: 1.7; }
+
+/* Figure + caption */
+.post-figure { margin: 16px 0; }
+.post-figure img { width:100%; border-radius:10px; border:1px solid var(--border); }
+.post-figcap { font-size:.9rem; color:#6b7280; margin-top: 6px; }
+
+/* Callout */
+.callout {
+  margin: 14px 0;
+  padding: 12px 14px;
+  border:1px solid var(--blue);
+  background: #f7fbfe;
+  border-radius:10px;
+}
+
+/* Pull quote */
+.pullquote {
+  margin: 16px 0;
+  padding-left: 14px;
+  border-left: 4px solid var(--blue);
+  color: var(--grey);
+  font-size: 1.05rem;
+  font-style: italic;
+}
+
+/* Inline code / pre (optional) */
+.post-content code { background:#f3f4f6; padding: 0 4px; border-radius: 4px; }
+.post-content pre { background:#0b0b0c; color:#f6f7f9; padding:12px; border-radius:10px; overflow:auto; }
+
+/* Breadcrumb back link (small, unobtrusive) */
+.post-breadcrumb { margin: 0 0 8px; font-size:.95rem; }
+.post-breadcrumb a { color: var(--blue); text-decoration: none; }
+.post-breadcrumb a:hover { text-decoration: underline; }
+
+/* Spacing rhythm */
+.section.post { padding-top: 40px; padding-bottom: 64px; }

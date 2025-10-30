@@ -796,3 +796,52 @@ main { flex: 1; }
 
 /* Ensure no unexpected gaps */
 body, main { margin: 0; }
+
+/* === Cookie Toggle CSS START === */
+/* Layout */
+.pref-row{display:flex;flex-direction:column;align-items:start;justify-content:space-between;gap:16px;margin:16px 0;padding:12px 0;border-top:1px solid #eee}
+.pref-row:first-child{border-top:0}
+.pref-copy{flex:1 1 auto}
+.pref-title{margin:0 0 6px;font-size:1.05rem}
+.pref-desc{margin:0;color:#444}
+.pref-status{margin:6px 0 0;color:#333;font-size:.95rem}
+
+/* Switch */
+.switch{--on:#055680; --off:#3e3e3c; --thumb:#fff; --text:#111;
+  appearance:none; border:0; background:transparent; padding:0; cursor:pointer;
+  position:relative; inline-size:220px; block-size:40px; border-radius:999px;
+}
+.switch:focus-visible{outline:2px solid #055680; outline-offset:2px}
+.switch[aria-checked="true"] .switch-track{background:var(--on)}
+.switch[aria-checked="false"] .switch-track{background:var(--off)}
+
+.switch-track{
+  position:relative; inline-size:100%; block-size:100%;
+  border-radius:999px; display:flex; align-items:center; overflow:hidden;
+  transition:background-color .2s ease;
+}
+
+/* Labels inside the track */
+.switch-label{position:absolute; inset-block:0; display:flex; align-items:center;
+  font:500 14px/1.2 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff;
+  padding:0 14px; pointer-events:none; user-select:none;
+}
+.switch-label.off{inset-inline-start:52px; opacity:1}
+.switch[aria-checked="true"] .switch-label.off{opacity:0}
+.switch-label.on{inset-inline-end:52px; opacity:0}
+.switch[aria-checked="true"] .switch-label.on{opacity:1}
+
+/* Thumb */
+.switch-thumb{
+  position:absolute; inset-block:4px; inset-inline-start:4px;
+  inline-size:32px; block-size:32px; border-radius:50%;
+  background:var(--thumb); box-shadow:0 2px 8px rgba(0,0,0,.18);
+  transform:translateX(0); transition:transform .22s ease;
+}
+.switch[aria-checked="true"] .switch-thumb{ transform:translateX(180px) } /* 220 - (4+32+4) */
+
+/* Motion-respect */
+@media (prefers-reduced-motion: reduce){
+  .switch-track,.switch-thumb{transition:none}
+}
+/* === Cookie Toggle CSS END === */

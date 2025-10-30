@@ -18,8 +18,8 @@
     #cb-text{flex:1 1 auto}
     #cb-actions{display:flex;gap:8px;flex:0 0 auto}
     #cb-actions button{border:0;border-radius:8px;padding:8px 12px;cursor:pointer}
-    #cb-accept{background:#0066cc;color:#fff}
-    #cb-reject{background:#e6e6e6;color:#111}
+    #cb-accept{background:#055680;color:#fff}
+    #cb-reject{background:#3e3e3c;color:#fff}
     @media (max-width:640px){
       #cb-inner{flex-direction:column;align-items:stretch}
       #cb-actions{justify-content:flex-end}
@@ -42,7 +42,7 @@
       <div id="cb-text">
         <strong>Analytics cookies</strong> – We use privacy-friendly analytics to improve this site.
         You can accept or reject analytics at any time.
-        <a href="/privacy.html" id="cb-policy-link">Learn more</a>.
+        <a href="/policies.html" id="cb-policy-link">Learn more</a>.
       </div>
       <div id="cb-actions">
         <button id="cb-reject" type="button">Reject</button>

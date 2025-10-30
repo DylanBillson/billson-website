@@ -57,6 +57,35 @@
         </div>
       </div>
     </section>
+
+    <!-- Header / intro -->
+    <section class="section section--plain">
+      <div class="container">
+      <div class="pref-row">
+        <div class="pref-copy">
+          <h3 class="pref-title">Analytics Toggle</h3>
+          <p class="pref-desc">Privacy-friendly analytics to help us improve this site.</p>
+        </div>
+
+        <!-- ARIA switch: keyboard + screen-reader friendly -->
+        <button id="analytics-toggle"
+                class="switch"
+                role="switch"
+                aria-checked="false"
+                aria-labelledby="analytics-switch-label">
+          <span class="switch-track">
+            <span class="switch-label off">Disabled</span>
+            <span class="switch-label on">Enabled</span>
+            <span class="switch-thumb" aria-hidden="true"></span>
+          </span>
+        </button>
+      </div>
+
+      <p id="analytics-status" class="pref-status" aria-live="polite">
+        Analytics are disabled.
+      </p>
+    </div>
+    </section>
   </main>
 
   <div id="site-footer"></div>
@@ -64,5 +93,6 @@
   <script src="/assets/js/includes.js"></script>
   <script src="/assets/js/matomo-init.js" defer></script>
   <script src="/assets/js/cookie-banner.js" defer></script>
+  <script src="/assets/js/policy-analytics-toggle.js" defer></script>
 </body>
 </html>

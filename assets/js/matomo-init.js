@@ -34,7 +34,12 @@
   // --- PUBLIC API for your banner/toggle ---
   window.enableAnalytics = function () {
     setConsent('accepted');
-    CONFIG.useCookies = true;  // allow cookies when user accepts
+    CONFIG.useCookies = true;
+
+    var _paq = window._paq = window._paq || [];
+    _paq.push(['rememberConsentGiven']);       // tell Matomo consent is now granted
+    _paq.push(['forgetConsentRemoved']);       // clear any old “consent removed” cookie
+
     bootMatomo();
   };
   window.disableAnalytics = function () {

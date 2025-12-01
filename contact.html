@@ -97,63 +97,217 @@
   <script src="/assets/js/includes.js"></script>
   <script src="/assets/js/matomo-init.js" defer></script>
   <script src="/assets/js/cookie-banner.js" defer></script>
-  <script>
-    // Fake-submit handler (no backend yet)
-    document.getElementById('contactForm').addEventListener('submit', function(e){
-      e.preventDefault();
+<script>
+  (function () {
+    // -------------------------
+    // CONFIG
+    // -------------------------
+    const CONFIG = {
+      websiteName: "Xperfecta",                    // {website}
+      formName: "Contact Form",                    // {form}
+      webFormName: "website-communication-form",   // ERPNext web form "name"
+      apiBaseUrl: "https://galea.care"             // target ERPNext site
+    };
 
-      // Simple front-end required check
-      const name = this.querySelector('#name');
-      const email = this.querySelector('#email');
-      const subject = this.querySelector('#subject');
-      if(!name.value || !email.value || !subject.value){
-        // use browser validation UI
-        (name.value ? (email.value ? subject : name) : name).reportValidity();
-        return;
+    // -------------------------
+    // Helpers
+    // -------------------------
+    function pad2(n) {
+      n = String(n);
+      return n.length < 2 ? "0" + n : n;
+    }
+
+    // dd/MM/yy HH:mm
+    function formatDateTime(dt) {
+      const dd = pad2(dt.getDate());
+      const mm = pad2(dt.getMonth() + 1);
+      const yy = String(dt.getFullYear()).slice(-2);
+      const hh = pad2(dt.getHours());
+      const mi = pad2(dt.getMinutes());
+      return `${dd}/${mm}/${yy} ${hh}:${mi}`;
+    }
+
+    function buildPlainText(values) {
+      const NL = "\n";
+      return [
+        "NAME: " + (values.name || ""),
+        "",
+        "EMAIL: " + (values.email || ""),
+        "",
+        "PHONE: " + (values.phone || ""),
+        "",
+        "PHONE TYPE: " + (values.phoneType || ""),
+        "",
+        "SUBJECT: " + (values.subject || ""),
+        "",
+        "MESSAGE:",
+        "",
+        values.message || ""
+      ].join(NL);
+    }
+
+    async function submitToWebForm(doc) {
+      const fd = new FormData();
+      fd.append("web_form", CONFIG.webFormName);
+      fd.append("data", JSON.stringify(doc));
+
+      const res = await fetch(
+        CONFIG.apiBaseUrl +
+          "/api/method/frappe.website.doctype.web_form.web_form.accept",
+        {
+          method: "POST",
+          body: fd
+          // no CSRF header here – this assumes the webform accepts guest cross-origin posts
+        }
+      );
+
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {
+        throw new Error("Unexpected response from server.");
       }
 
-      // Show success state
-      const alertBox = document.getElementById('formAlert');
-      alertBox.classList.add('show');
+      if (!res.ok || data.exc || data.exc_type) {
+        const msg =
+          data._server_messages ||
+          data.message ||
+          "Submission failed. Please try again.";
+        throw new Error(
+          typeof msg === "string" ? msg : JSON.stringify(msg)
+        );
+      }
 
-      // Simulate a submit by clearing (you can remove this if you prefer)
-      this.reset();
+      return data;
+    }
 
-      // Keep default radio after reset
-      this.querySelector('input[name="phone_type"][value="office"]').checked = true;
+    // -------------------------
+    // Wire up form + phone toggle
+    // -------------------------
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("contactForm");
+      if (!form) return;
 
-      // Scroll alert into view on mobile
-      alertBox.scrollIntoView({behavior:'smooth', block:'nearest'});
-    });
-  </script>
-<script>
-  // Toggle group for Phone Type
-  (function(){
-    const group = document.getElementById('phoneType');
-    const hidden = document.getElementById('phone_type');
-    if(!group || !hidden) return;
+      const alertBox = document.getElementById("formAlert");
+      const submitBtn = form.querySelector('button[type="submit"]');
 
-    group.addEventListener('click', (e)=>{
-      const btn = e.target.closest('button[data-value]');
-      if(!btn) return;
-      group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      hidden.value = btn.dataset.value;
+      // Phone type toggle
+      const group = document.getElementById("phoneType");
+      const hiddenPhoneType = document.getElementById("phone_type");
+
+      if (group && hiddenPhoneType) {
+        group.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-value]");
+          if (!btn) return;
+          group
+            .querySelectorAll("button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          hiddenPhoneType.value = btn.dataset.value;
+        });
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        // HTML5 validation
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const nameEl = form.querySelector("#name");
+        const emailEl = form.querySelector("#email");
+        const phoneEl = form.querySelector("#phone");
+        const subjectEl = form.querySelector("#subject");
+        const messageEl = form.querySelector("#message");
+
+        const name = (nameEl.value || "").trim();
+        const email = (emailEl.value || "").trim();
+        const phone = (phoneEl.value || "").trim();
+        const phoneType = hiddenPhoneType ? hiddenPhoneType.value : "";
+        const subject =
+          (subjectEl.value || "").trim() || "General enquiry";
+        const message = (messageEl.value || "").trim();
+
+        // Build communication name
+        const now = new Date();
+        const displayName = name || "Website Visitor";
+        const communicationName =
+          CONFIG.websiteName +
+          " - " +
+          CONFIG.formName +
+          " - " +
+          displayName +
+          " - " +
+          formatDateTime(now);
+
+        // Plain text message
+        const plainTextMessage = buildPlainText({
+          name,
+          email,
+          phone,
+          phoneType,
+          subject,
+          message
+        });
+
+        // Map into Website Communications doctype
+        const doc = {
+          communication_name_1: communicationName,
+          communication_message_1: plainTextMessage
+        };
+
+        // UI: sending state
+        if (alertBox) {
+          alertBox.textContent = "Sending your message…";
+          alertBox.classList.add("show");
+        }
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Sending…";
+        }
+
+        try {
+          await submitToWebForm(doc);
+
+          if (alertBox) {
+            alertBox.textContent =
+              "Thank you — your message has been recorded.";
+            alertBox.classList.add("show");
+          }
+
+          // Reset form & phone toggle
+          form.reset();
+          if (group && hiddenPhoneType) {
+            group
+              .querySelectorAll("button")
+              .forEach((b) =>
+                b.classList.toggle("active", b.dataset.value === "office")
+              );
+            hiddenPhoneType.value = "office";
+          }
+
+          alertBox &&
+            alertBox.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest"
+            });
+        } catch (err) {
+          if (alertBox) {
+            alertBox.textContent =
+              "Sorry, something went wrong. Please try again in a moment.";
+            alertBox.classList.add("show");
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send Message";
+          }
+        }
+      });
     });
   })();
-
-  // Ensure default after fake submit reset
-  document.getElementById('contactForm').addEventListener('submit', function(){
-    setTimeout(()=>{
-      // restore default phone type
-      const group = document.getElementById('phoneType');
-      const hidden = document.getElementById('phone_type');
-      if(group && hidden){
-        group.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.value === 'office'));
-        hidden.value = 'office';
-      }
-    },0);
-  });
 </script>
 
 </body>

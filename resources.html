@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Xperfecta — Resources</title>
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="icon" href="/favicon.svg" />
+  <meta name="description" content="Resources, papers and supporting material from Xperfecta." />
+
+  <!-- Page-specific tweaks (can be moved into main.css if you prefer) -->
+  <style>
+    .resources-intro{
+      max-width: 70ch;
+      color: var(--text);
+    }
+    .resource-search{
+      margin-top: 16px;
+      max-width: 420px;
+    }
+    .resource-search input{
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font: inherit;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    .resource-search input:focus{
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(5,86,128,.15);
+    }
+
+    /* Use the existing policies grid + cards for layout */
+    .resources-grid{
+      /* reuse existing .policies-grid behaviour if present */
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    @media (max-width: 900px){
+      .resources-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 640px){
+      .resources-grid{ grid-template-columns: 1fr; }
+    }
+
+    .resource-card{
+      /* reuse .policy-card look from main.css, but keep separate class in case you tweak later */
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .resource-card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.08);
+    }
+
+    .resource-title{
+      margin: 0;
+      color: var(--grey);
+      font-size: 1.2rem !important;
+    }
+    .resource-meta{
+      font-size: .9rem;
+      color: #6b7280;
+    }
+    .resource-desc{
+      margin: 0;
+      color: var(--text);
+    }
+    .resource-actions{
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* Optional outline button variant if you prefer */
+    .btn-outline{
+      display:inline-block;
+      text-decoration:none;
+      background:#fff;
+      color:var(--blue);
+      border:1px solid var(--blue);
+      padding:10px 14px;
+      border-radius:10px;
+      transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+    .btn-outline:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,.12);
+      background:#f7fbfe;
+    }
+
+    /* Pinned badge (inspired by Galea research page) */
+    .pinned-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:0.35rem;
+      padding:0.15rem 0.5rem;
+      border-radius:999px;
+      border:1px solid var(--blue);
+      font-size:0.8rem;
+      line-height:1;
+      color:var(--blue);
+      background:#f7fbfe;
+      width: fit-content;
+    }
+    .pinned-dot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--blue);
+    }
+
+    .resources-empty{
+      margin-top: 16px;
+      color:#6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Hero / title -->
+    <section class="section section--plain">
+      <div class="container">
+        <div class="rule"></div>
+        <h1 class="h-gradient">Resources</h1>
+        <p class="resources-intro">
+          Download briefings, overviews and supporting documents that sit behind Xperfecta’s platform and approach.
+        </p>
+        <div class="resource-search">
+          <label for="searchInput" class="sr-only">Search resources</label>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by title, topic, or description..."
+            oninput="renderResources()"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources grid -->
+    <section class="section section--tint">
+      <div class="container">
+        <div id="resourcesContainer" class="resources-grid"></div>
+        <p id="resourcesEmpty" class="resources-empty" style="display:none;">
+          No matching resources found. Try another search term.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- required scripts -->
+  <script src="/assets/js/includes.js"></script>
+  <script src="/assets/js/matomo-init.js" defer></script>
+  <script src="/assets/js/cookie-banner.js" defer></script>
+
+  <!-- Resources data + renderer -->
+  <script>
+const resources = [
+  {
+    title: "Integrated fuzzy condition assessment and decision support for water pipe mains",
+    description: "The study presents IFCADS, a fully-fuzzified hierarchical rule-based system that converts expert knowledge into structured predictions of water-pipe condition, maintaining uncertainty throughout the process for more reliable assessments. Tested on real-world data from the Libyan Man-Made River Project, it demonstrated significantly higher accuracy than current industry models.",
+    author: "Nasser M. Amaitik, Dr Christopher D. Buckingham",
+    date: "2025",
+    link: "/assets/resources/integrated-fuzzy-condition-assessment-and-decision-support-for-water-pipe-mains.pdf",
+    pinned: true
+  },
+  {
+    title: "Moderating the Influence of Current Intention to Improve Suicide Risk Prediction",
+    description: "This paper introduces a method for classifying whether a person’s stated absence of suicide intention is trustworthy, using GRiST assessment data and probabilistic modelling. The findings demonstrate that unreliability can be predicted with high accuracy, improving the quality of suicide risk evaluation and supporting safer clinical decisions.",
+    author: "N. Zaher, Dr Christopher D. Buckingham",
+    date: "2016",
+    link: "/assets/resources/moderating-the-influence-of-current-intention-to-improve-suicide-risk-prediction.pdf",
+    pinned: false
+  },
+  {
+    title: "Integrating service user and practitioner expertise within a web-based system for collaborative mental-health risk and safety management",
+    description: "This paper describes the development of myGRaCE, a web-based tool that brings together practitioner expertise and the lived experience of service users to support collaborative mental-health risk assessment and self-management. Through extensive co-design with service users, the system provides a more intuitive, empowering way for people to understand risks and actively participate in their own care.",
+    author: "Dr Christopher D. Buckingham, Ann Adams, Laura Vail, Ashish Kumar, Abu Ahmed, Annie Whelan, Eleni Karasouli",
+    date: "2015",
+    link: "/assets/resources/integrating-service-user-and-practitioner-expertise-within-a-web-based-system-for-collaborative-mental-health-risk-and-safety-management.pdf",
+    pinned: false
+  },
+  {
+    title: "Designing multiple user perspectives and functionality for clinical decision support systems",
+    description: "This paper explains how the GRiST system was engineered to present mental-health risk expertise in formats tailored to different users, from clinicians to service users, by building a flexible, psychologically grounded knowledge structure. The approach shows how a single expert model can power multiple interfaces and assessment styles without losing clarity or accuracy.",
+    author: "Dr Christopher D. Buckingham, A. Ahmed, Ann Adams",
+    date: "2013",
+    link: "/assets/resources/designing-multiple-user-perspectives-and-functionality-for-clinical-decision-support-systems.pdf",
+    pinned: false
+  },
+  {
+    title: "Cues and knowledge structures used by mental-health professionals when making risk assessments",
+    description: "This paper identifies the cues mental-health professionals rely on when judging risks such as suicide, self-harm, self-neglect, and harm to others, revealing clear patterns in how clinicians think about and structure risk information. The findings provide a foundation for building decision-support tools that reflect real clinical expertise rather than isolated risk factors.",
+    author: "Dr Christopher D. Buckingham, Ann Adams,  Chris Mace",
+    date: "2008",
+    link: "/assets/resources/cues-and-knowledge-structures-used-by-mental-health-professionals-when-making-risk-assessments.pdf",
+    pinned: false
+  },
+  {
+    title: "Psychological cue use and implications for a clinical decision support system",
+    description: "This paper introduces the galatean model, a psychological explanation of how clinicians use cues, and sometimes misjudge probabilities, when assessing risks like suicide. The model provides a transparent way to represent and improve clinical reasoning, making it a strong foundation for decision-support systems that blend expert judgement with data-driven analysis.",
+    author: "Dr Christopher D. Buckingham",
+    date: "2002",
+    link: "/assets/resources/psychological-cue-use-and-implications-for-a-clinical-decision-support-system.pdf",
+    pinned: false
+  }
+];
+
+    const resourcesWithIds = resources.map(r => ({
+      ...r,
+      id: r.id || `${r.title}::${r.category || ""}`
+    }));
+
+    function renderResources() {
+      const container = document.getElementById("resourcesContainer");
+      const emptyState = document.getElementById("resourcesEmpty");
+      const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+
+      // Filter by search term (title, description, author etc)
+      const filtered = resourcesWithIds
+        .filter(r => {
+        const haystack = [
+            r.title || "",
+            r.description || "",
+            r.author || "",
+            r.date || ""
+        ].join(" ").toLowerCase();
+          return haystack.includes(q);
+        })
+        .sort((a, b) => {
+          // Pinned first, then alphabetical by title
+          const ap = a.pinned === true ? 1 : 0;
+          const bp = b.pinned === true ? 1 : 0;
+          if (ap !== bp) return bp - ap;
+          return (a.title || "").localeCompare(b.title || "");
+        });
+
+      container.innerHTML = "";
+      if (filtered.length === 0) {
+        emptyState.style.display = "block";
+        return;
+      }
+      emptyState.style.display = "none";
+
+      // Build cards
+      filtered.forEach(res => {
+        const card = document.createElement("article");
+        card.className = "resource-card";
+
+        card.innerHTML = `
+        ${res.pinned ? `
+            <span class="pinned-badge" aria-label="Pinned resource">
+            <span class="pinned-dot" aria-hidden="true"></span>
+            Key resource
+            </span>
+        ` : ""}
+
+        <h2 class="resource-title">${res.title}</h2>
+
+        ${res.description ? `
+            <p class="resource-desc">${res.description}</p>
+        ` : ""}
+
+        <p class="resource-meta">
+            <strong>Author:</strong> ${res.author || "—"}<br>
+            <strong>Published:</strong> ${res.date || "—"}
+        </p>
+
+        <div class="resource-actions">
+            <a class="btn" href="${res.link}" target="_blank" rel="noopener">
+            Open PDF
+            </a>
+        </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", renderResources);
+  </script>
+</body>
+</html>

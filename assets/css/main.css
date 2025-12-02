@@ -1,7 +1,7 @@
 :root{
   --text:#1f2937;      /* slate-800 */
   --bg:#ffffff;
-  --brand:#0d6efd;     /* Bootstrap-ish blue */
+  --brand:#055680;     /* Bootstrap-ish */
   --muted:#6b7280;     /* slate-500 */
   --border:#e5e7eb;    /* gray-200 */
 }
@@ -23,9 +23,9 @@ p{ margin:.5rem 0 1rem; }
 
 /* === Header CSS START === */
 :root{
-  --header-bg:#3e3e3c;    /* Galea Grey */
-  --header-fg:#ffffff;    /* White text */
-  --header-hover:rgba(255,255,255,.08);
+  --header-bg:#055680;
+  --header-fg:#ffffff;
+  --header-hover:#044666;
   --header-active:#ffffff;
 }
 
@@ -217,15 +217,26 @@ body{
 
 /* Gradient headline text */
 .h-gradient{
-  background: linear-gradient(90deg, var(--grey) 0%, var(--blue) 100%);
+  background: linear-gradient(90deg, #044666 0%, var(--blue) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 /* Hero sizing */
+/* Center hero text */
+.hero .container {
+  text-align: center;
+  /*max-width: 800px;/*         /* optional: keeps the text nicely readable */
+  margin: 0 auto;
+}
+
+.hero p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .hero h1{ font-size: clamp(32px, 6vw, 56px); margin: 0 0 12px; }
-.hero p{ max-width: 60ch; color: var(--text); opacity: .9; }
 
 /* Card grid (Divisions, Platform tiles, etc.) */
 .grid{ display: grid; gap: 16px; }
@@ -266,7 +277,7 @@ body{
 /* Buttons later (first used in Divisions) */
 .btn{
   display:inline-block; text-decoration:none;
-  background: var(--grey); color: #fff;
+  background: var(--blue); color: #fff;
   padding: 10px 14px; border-radius: 10px;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }

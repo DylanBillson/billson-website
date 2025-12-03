@@ -41,7 +41,7 @@
     <div id="cb-inner">
       <div id="cb-text">
         <strong>Analytics cookies</strong> – We use privacy-friendly analytics to improve this site.
-        You can accept or reject analytics at any time.
+        You can change your analytics settings at any time on our policy page.
         <a href="/policies.html" id="cb-policy-link">Learn more</a>.
       </div>
       <div id="cb-actions">

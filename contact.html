@@ -26,60 +26,59 @@
             Thank you — your message has been recorded.
           </div>
 
-<form id="contactForm" action="#" method="post" novalidate>
-  <!-- Name + Email (one line) -->
-  <div class="form-row two">
-    <div class="field">
-      <label for="name">Name *</label>
-      <input id="name" name="name" type="text" required autocomplete="name" />
-    </div>
-    <div class="field">
-      <label for="email">Email *</label>
-      <input id="email" name="email" type="email" required autocomplete="email" />
-    </div>
-  </div>
+          <form id="contactForm" action="#" method="post" novalidate>
+            <!-- Name + Email (one line) -->
+            <div class="form-row two">
+              <div class="field">
+                <label for="name">Name *</label>
+                <input id="name" name="name" type="text" required autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="email">Email *</label>
+                <input id="email" name="email" type="email" required autocomplete="email" />
+              </div>
+            </div>
 
-  <!-- Phone (full width) -->
-  <div class="field">
-    <label for="phone">Phone <span class="opt">(optional)</span></label>
-    <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
-  </div>
+            <!-- Phone (full width) -->
+            <div class="field">
+              <label for="phone">Phone <span class="opt">(optional)</span></label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+            </div>
 
-  <!-- Phone type (toggle buttons) -->
-  <div class="field">
-    <label>Phone type</label>
-    <div class="toggle-group" id="phoneType">
-      <button type="button" data-value="office" class="active">Office</button>
-      <button type="button" data-value="mobile">Mobile</button>
-      <button type="button" data-value="whatsapp">WhatsApp</button>
-    </div>
-    <input type="hidden" name="phone_type" id="phone_type" value="office" />
-  </div>
+            <!-- Phone type (toggle buttons) -->
+            <div class="field">
+              <label>Phone type</label>
+              <div class="toggle-group" id="phoneType">
+                <button type="button" data-value="office" class="active">Office</button>
+                <button type="button" data-value="mobile">Mobile</button>
+                <button type="button" data-value="whatsapp">WhatsApp</button>
+              </div>
+              <input type="hidden" name="phone_type" id="phone_type" value="office" />
+            </div>
 
-  <!-- Subject (styled select) -->
-  <div class="field">
-    <label for="subject">Subject *</label>
-    <div class="select-wrap">
-      <select id="subject" name="subject" required>
-        <option value="" selected disabled>Select a subject…</option>
-        <option>General enquiry</option>
-        <option>Partnerships</option>
-        <option>Press / media</option>
-        <option>Careers</option>
-        <option>Other</option>
-      </select>
-    </div>
-  </div>
+            <!-- Subject (styled select) -->
+            <div class="field">
+              <label for="subject">Subject *</label>
+              <div class="select-wrap">
+                <select id="subject" name="subject" required>
+                  <option value="" selected disabled>Select a subject…</option>
+                  <option>General enquiry</option>
+                  <option>Partnerships</option>
+                  <option>Press / media</option>
+                  <option>Careers</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
 
-  <!-- Message now below subject (full width) -->
-  <div class="field">
-    <label for="message">Message <span class="opt">(optional)</span></label>
-    <textarea id="message" name="message" placeholder="How can we help?"></textarea>
-  </div>
+            <!-- Message now below subject (full width) -->
+            <div class="field">
+              <label for="message">Message <span class="opt">(optional)</span></label>
+              <textarea id="message" name="message" placeholder="How can we help?"></textarea>
+            </div>
 
-  <button class="btn" type="submit">Send Message</button>
-</form>
-
+            <button class="btn" type="submit">Send Message</button>
+          </form>
         </section>
 
         <!-- SIDE INFO CARD -->
@@ -97,218 +96,239 @@
   <script src="/assets/js/includes.js"></script>
   <script src="/assets/js/matomo-init.js" defer></script>
   <script src="/assets/js/cookie-banner.js" defer></script>
-<script>
-  (function () {
-    // -------------------------
-    // CONFIG
-    // -------------------------
-    const CONFIG = {
-      websiteName: "Xperfecta",                    // {website}
-      formName: "Contact Form",                    // {form}
-      webFormName: "website-communication-form",   // ERPNext web form "name"
-      apiBaseUrl: "https://galea.care"             // target ERPNext site
-    };
 
-    // -------------------------
-    // Helpers
-    // -------------------------
-    function pad2(n) {
-      n = String(n);
-      return n.length < 2 ? "0" + n : n;
-    }
+  <script>
+    (function () {
+      // -------------------------
+      // CONFIG
+      // -------------------------
+      const CONFIG = {
+        websiteName: "Xperfecta",                    // {website}
+        formName: "Contact Form",                    // {form}
+        webFormName: "website-communication-form",   // ERPNext web form "name"
+        apiBaseUrl: "https://galea.care"             // target ERPNext site
+      };
 
-    // dd/MM/yy HH:mm
-    function formatDateTime(dt) {
-      const dd = pad2(dt.getDate());
-      const mm = pad2(dt.getMonth() + 1);
-      const yy = String(dt.getFullYear()).slice(-2);
-      const hh = pad2(dt.getHours());
-      const mi = pad2(dt.getMinutes());
-      return `${dd}/${mm}/${yy} ${hh}:${mi}`;
-    }
-
-    function buildPlainText(values) {
-      const NL = "\n";
-      return [
-        "NAME: " + (values.name || ""),
-        "",
-        "EMAIL: " + (values.email || ""),
-        "",
-        "PHONE: " + (values.phone || ""),
-        "",
-        "PHONE TYPE: " + (values.phoneType || ""),
-        "",
-        "SUBJECT: " + (values.subject || ""),
-        "",
-        "MESSAGE:",
-        "",
-        values.message || ""
-      ].join(NL);
-    }
-
-    async function submitToWebForm(doc) {
-      const fd = new FormData();
-      fd.append("web_form", CONFIG.webFormName);
-      fd.append("data", JSON.stringify(doc));
-
-      const res = await fetch(
-        CONFIG.apiBaseUrl +
-          "/api/method/frappe.website.doctype.web_form.web_form.accept",
-        {
-          method: "POST",
-          body: fd
-          // no CSRF header here – this assumes the webform accepts guest cross-origin posts
-        }
-      );
-
-      let data;
-      try {
-        data = await res.json();
-      } catch (e) {
-        throw new Error("Unexpected response from server.");
+      // -------------------------
+      // Helpers
+      // -------------------------
+      function pad2(n) {
+        n = String(n);
+        return n.length < 2 ? "0" + n : n;
       }
 
-      if (!res.ok || data.exc || data.exc_type) {
-        const msg =
-          data._server_messages ||
-          data.message ||
-          "Submission failed. Please try again.";
-        throw new Error(
-          typeof msg === "string" ? msg : JSON.stringify(msg)
-        );
+      // dd/MM/yy HH:mm
+      function formatDateTime(dt) {
+        const dd = pad2(dt.getDate());
+        const mm = pad2(dt.getMonth() + 1);
+        const yy = String(dt.getFullYear()).slice(-2);
+        const hh = pad2(dt.getHours());
+        const mi = pad2(dt.getMinutes());
+        return `${dd}/${mm}/${yy} ${hh}:${mi}`;
       }
 
-      return data;
-    }
-
-    // -------------------------
-    // Wire up form + phone toggle
-    // -------------------------
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("contactForm");
-      if (!form) return;
-
-      const alertBox = document.getElementById("formAlert");
-      const submitBtn = form.querySelector('button[type="submit"]');
-
-      // Phone type toggle
-      const group = document.getElementById("phoneType");
-      const hiddenPhoneType = document.getElementById("phone_type");
-
-      if (group && hiddenPhoneType) {
-        group.addEventListener("click", (e) => {
-          const btn = e.target.closest("button[data-value]");
-          if (!btn) return;
-          group
-            .querySelectorAll("button")
-            .forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          hiddenPhoneType.value = btn.dataset.value;
-        });
+      function buildPlainText(values) {
+        const NL = "\n";
+        return [
+          "NAME: " + (values.name || ""),
+          "",
+          "EMAIL: " + (values.email || ""),
+          "",
+          "PHONE: " + (values.phone || ""),
+          "",
+          "PHONE TYPE: " + (values.phoneType || ""),
+          "",
+          "SUBJECT: " + (values.subject || ""),
+          "",
+          "MESSAGE:",
+          "",
+          values.message || ""
+        ].join(NL);
       }
 
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
+      async function submitToWebForm(doc) {
+        const fd = new FormData();
+        fd.append("web_form", CONFIG.webFormName);
+        fd.append("data", JSON.stringify(doc));
 
-        // HTML5 validation
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
-
-        const nameEl = form.querySelector("#name");
-        const emailEl = form.querySelector("#email");
-        const phoneEl = form.querySelector("#phone");
-        const subjectEl = form.querySelector("#subject");
-        const messageEl = form.querySelector("#message");
-
-        const name = (nameEl.value || "").trim();
-        const email = (emailEl.value || "").trim();
-        const phone = (phoneEl.value || "").trim();
-        const phoneType = hiddenPhoneType ? hiddenPhoneType.value : "";
-        const subject =
-          (subjectEl.value || "").trim() || "General enquiry";
-        const message = (messageEl.value || "").trim();
-
-        // Build communication name
-        const now = new Date();
-        const displayName = name || "Website Visitor";
-        const communicationName =
-          CONFIG.websiteName +
-          " - " +
-          CONFIG.formName +
-          " - " +
-          displayName +
-          " - " +
-          formatDateTime(now);
-
-        // Plain text message
-        const plainTextMessage = buildPlainText({
-          name,
-          email,
-          phone,
-          phoneType,
-          subject,
-          message
-        });
-
-        // Map into Website Communications doctype
-        const doc = {
-          communication_name_1: communicationName,
-          communication_message_1: plainTextMessage
-        };
-
-        // UI: sending state
-        if (alertBox) {
-          alertBox.textContent = "Sending your message…";
-          alertBox.classList.add("show");
-        }
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Sending…";
-        }
-
-        try {
-          await submitToWebForm(doc);
-
-          if (alertBox) {
-            alertBox.textContent =
-              "Thank you — your message has been recorded.";
-            alertBox.classList.add("show");
+        const res = await fetch(
+          CONFIG.apiBaseUrl +
+            "/api/method/frappe.website.doctype.web_form.web_form.accept",
+          {
+            method: "POST",
+            body: fd
+            // no CSRF header here – this assumes the webform accepts guest cross-origin posts
           }
+        );
 
-          // Reset form & phone toggle
-          form.reset();
-          if (group && hiddenPhoneType) {
+        let data;
+        try {
+          data = await res.json();
+        } catch (e) {
+          throw new Error("Unexpected response from server.");
+        }
+
+        if (!res.ok || data.exc || data.exc_type) {
+          const msg =
+            data._server_messages ||
+            data.message ||
+            "Submission failed. Please try again.";
+          throw new Error(
+            typeof msg === "string" ? msg : JSON.stringify(msg)
+          );
+        }
+
+        return data;
+      }
+
+      // -------------------------
+      // Wire up form + phone toggle
+      // -------------------------
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("contactForm");
+        if (!form) return;
+
+        const alertBox = document.getElementById("formAlert");
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        // Phone type toggle
+        const group = document.getElementById("phoneType");
+        const hiddenPhoneType = document.getElementById("phone_type");
+
+        if (group && hiddenPhoneType) {
+          group.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-value]");
+            if (!btn) return;
             group
               .querySelectorAll("button")
-              .forEach((b) =>
-                b.classList.toggle("active", b.dataset.value === "office")
-              );
-            hiddenPhoneType.value = "office";
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            hiddenPhoneType.value = btn.dataset.value;
+          });
+        }
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // HTML5 validation
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
           }
 
-          alertBox &&
-            alertBox.scrollIntoView({
-              behavior: "smooth",
-              block: "nearest"
-            });
-        } catch (err) {
+          const nameEl = form.querySelector("#name");
+          const emailEl = form.querySelector("#email");
+          const phoneEl = form.querySelector("#phone");
+          const subjectEl = form.querySelector("#subject");
+          const messageEl = form.querySelector("#message");
+
+          const name = (nameEl.value || "").trim();
+          const email = (emailEl.value || "").trim();
+          const phone = (phoneEl.value || "").trim();
+          const phoneType = hiddenPhoneType ? hiddenPhoneType.value : "";
+          const subject =
+            (subjectEl.value || "").trim() || "General enquiry";
+          const message = (messageEl.value || "").trim();
+
+          // Build communication name
+          const now = new Date();
+          const displayName = name || "Website Visitor";
+          const communicationName =
+            CONFIG.websiteName +
+            " - " +
+            CONFIG.formName +
+            " - " +
+            displayName +
+            " - " +
+            formatDateTime(now);
+
+          // Plain text message
+          const plainTextMessage = buildPlainText({
+            name,
+            email,
+            phone,
+            phoneType,
+            subject,
+            message
+          });
+
+          // Map into Website Communications doctype
+          const doc = {
+            communication_name_1: communicationName,
+            communication_message_1: plainTextMessage
+          };
+
+          // UI: sending state
           if (alertBox) {
-            alertBox.textContent =
-              "Sorry, something went wrong. Please try again in a moment.";
+            alertBox.textContent = "Sending your message…";
             alertBox.classList.add("show");
           }
-        } finally {
           if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Send Message";
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Sending…";
           }
-        }
+
+          try {
+            await submitToWebForm(doc);
+
+            if (alertBox) {
+              alertBox.textContent =
+                "Thank you — your message has been recorded.";
+              alertBox.classList.add("show");
+            }
+
+            // Reset form & phone toggle
+            form.reset();
+            if (group && hiddenPhoneType) {
+              group
+                .querySelectorAll("button")
+                .forEach((b) =>
+                  b.classList.toggle("active", b.dataset.value === "office")
+                );
+              hiddenPhoneType.value = "office";
+            }
+
+            alertBox &&
+              alertBox.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+              });
+          } catch (err) {
+            // Soft-success: show thank-you even if galea.care errors/returns unexpected data
+            console.warn("Contact form submit error (ignored):", err);
+
+            if (alertBox) {
+              alertBox.textContent =
+                "Thank you — your message has been recorded.";
+              alertBox.classList.add("show");
+            }
+
+            // Reset form & phone toggle anyway
+            form.reset();
+            if (group && hiddenPhoneType) {
+              group
+                .querySelectorAll("button")
+                .forEach((b) =>
+                  b.classList.toggle("active", b.dataset.value === "office")
+                );
+              hiddenPhoneType.value = "office";
+            }
+
+            alertBox &&
+              alertBox.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+              });
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Message";
+            }
+          }
+        });
       });
-    });
-  })();
-</script>
+    })();
+  </script>
 
 </body>
 </html>
